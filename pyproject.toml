@@ -8,6 +8,8 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.12"
 chalice = "^1.31.0"
+instructor = "^1.2.6"
+openai = "^1.29.0"
 
 
 [build-system]
