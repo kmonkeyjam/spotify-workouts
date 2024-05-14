@@ -2,7 +2,6 @@ import instructor
 from pydantic import BaseModel
 from openai import OpenAI
 
-
 # Define your desired output structure
 class UserInfo(BaseModel):
     name: str
