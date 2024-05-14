@@ -1,8 +1,8 @@
 [tool.poetry]
-name = "spotify-workouts"
+name = "web"
 version = "0.1.0"
 description = ""
-authors = ["Tina Huang <tina@transposit.com>"]
+authors = ["Tina Huang <tina@monkey.name>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
