@@ -1,5 +1,11 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Resources:
+  SpotifySecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name: spotify-workouts
+      Description: credentials for the app
+      SecretString: '{"SPOTIFY_OAUTH_CLIENT_ID": "your-client-id", "SPOTIFY_OAUTH_CLIENT_SECRET": "your-client-secret"}'
   LambdaExecutionRole:
     Type: 'AWS::IAM::Role'
     Properties:
@@ -21,4 +27,7 @@ Resources:
                   - 'logs:CreateLogStream'
                   - 'logs:PutLogEvents'
                 Resource: '*'
-
+              - Effect: Allow
+                Action:
+                  - secretsmanager:GetSecretValue
+                Resource: !Ref SpotifySecret
