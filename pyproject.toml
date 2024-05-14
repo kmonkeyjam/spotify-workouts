@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "spotify-workouts"
+version = "0.1.0"
+description = ""
+authors = ["Tina Huang <tina@transposit.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+chalice = "^1.31.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
