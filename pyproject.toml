@@ -6,7 +6,7 @@ authors = ["Tina Huang <tina@monkey.name>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "^3.10"
 chalice = "^1.31.0"
 instructor = "^1.2.6"
 openai = "^1.29.0"

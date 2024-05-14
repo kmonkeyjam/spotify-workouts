@@ -5,12 +5,11 @@
 
 # Deploying the Lambda
 `poetry shell`
+`poetry export -f requirements.txt --output requirements.txt`
 `AWS_PROFILE=kmonkeyjam chalice deploy`
 
-# Setting the OpenAI API Key
-`export OPENAI_API_KEY=xxx`
-
-
 # Other notes
+## Setting the OpenAI API Key locally
+`export OPENAI_API_KEY=xxx`
 ## Shortcut to create a new lambda project
 `chalice new-project mylambdaapp`

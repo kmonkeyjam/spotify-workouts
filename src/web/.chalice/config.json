@@ -1,8 +1,11 @@
 {
   "version": "2.0",
-  "app_name": "web",
+  "app_name": "spotify-workouts-web",
   "stages": {
     "dev": {
+      "app_package_include": [
+        "resources/*"
+      ],
       "api_gateway_stage": "api",
       "profile": "kmonkeyjam",
       "manage_iam_role": false,
