@@ -11,5 +11,6 @@
 # Other notes
 ## Setting the OpenAI API Key locally
 `export OPENAI_API_KEY=xxx`
+
 ## Shortcut to create a new lambda project
 `chalice new-project mylambdaapp`

@@ -1,7 +1,7 @@
 from chalice import Chalice, Response
 import os
 
-app = Chalice(app_name='mylambdaapp')
+app = Chalice(app_name='spotify-workouts-web')
 
 @app.route('/')
 def index():

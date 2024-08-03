@@ -3,7 +3,7 @@
     {
       "name": "api_handler",
       "resource_type": "lambda_function",
-      "lambda_arn": "arn:aws:lambda:us-west-2:725141292235:function:web-dev"
+      "lambda_arn": "arn:aws:lambda:us-west-2:725141292235:function:spotify-workouts-web-dev"
     },
     {
       "name": "rest_api",
