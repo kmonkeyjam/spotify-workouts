@@ -9,7 +9,13 @@
       "api_gateway_stage": "api",
       "profile": "kmonkeyjam",
       "manage_iam_role": false,
-      "iam_role_arn": "arn:aws:iam::725141292235:role/my-lambda-role-LambdaExecutionRole-KFXX50CMXqeM"
+      "iam_role_arn": "arn:aws:iam::725141292235:role/my-lambda-role-LambdaExecutionRole-KFXX50CMXqeM",
+      "binary_types": [
+        "text/css",
+        "text/html",
+        "application/javascript",
+        "text/plain"
+      ]
     }
   }
 }
