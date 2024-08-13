@@ -19,3 +19,4 @@ AWS_PROFILE=kmonkeyjam aws cloudformation create-stack --stack-name cloudfront-s
 `chalice new-project mylambdaapp`
 
 https://d27hv4mf8axlyg.cloudfront.net/
+

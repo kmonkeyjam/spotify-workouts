@@ -1,0 +1,8 @@
+type LoginStatus {
+  is_logged_in: Boolean!
+  login_url: String
+}
+
+type Query {
+  login_status(token: String!): LoginStatus
+}
