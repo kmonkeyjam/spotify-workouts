@@ -1,5 +1,5 @@
 from chalice import Chalice, Response, CORSConfig
-from ariadne import make_executable_schema, load_schema_from_path, graphql_sync
+from ariadne import make_executable_schema, load_schema_from_path, graphql_sync, format_error
 from chalicelib.resolvers import get_resolvers
 import logging
 
@@ -17,34 +17,30 @@ type_defs = load_schema_from_path("chalicelib/schema.graphql")
 
 schema = make_executable_schema(type_defs, *get_resolvers())
 
+def custom_error_formatter(error, debug=False):
+    # Log the error or print it out for debugging purposes
+    logger.error("GraphQL Error:", error.message)
+    if error.original_error:
+        logger.error("Original Error:", str(error.original_error))
+
+    # You can also log other error details if needed
+    logger.error("Path:", error.path)
+    logger.error("Locations:", error.locations)
+
+    # Format the error for the response
+    formatted_error = format_error(error, debug)
+    return formatted_error
+
+
 @app.route('/graphql', methods=['POST'], content_types=['application/json'], cors=cors_config)
 def graphql_endpoint():
     request = app.current_request
     data = request.json_body
-
-    # Extract the token from the Authorization header
-    auth_header = request.headers.get('Authorization', '')
-    if not auth_header.startswith('Bearer'):
-        logger.debug("Auth Header: {}".format(auth_header))
-        return Response(status_code=401, body={'error': 'Unauthorized'})
-
-    if auth_header != 'Bearer':
-        token = auth_header.split(' ')[1]  # Extract the token after 'Bearer '
-
-        # Add the token to the variables if not already present
-        if 'variables' not in data:
-            data['variables'] = {}
-
-        data['variables']['token'] = token
-    else:
-        # Kinda a hack b/c i don't feel like refactoring
-        data['variables']['token'] = "UNAUTHENTICATED"
-
     errors, result = graphql_sync(
-        schema,data
+        schema,data, error_formatter=custom_error_formatter
     )
 
     if errors:
-        return Response(status_code=400, body={'errors': [str(e) for e in errors]})
+        return Response(status_code=400, body={'result': result.get("errors", [])})
 
     return {'data': result}

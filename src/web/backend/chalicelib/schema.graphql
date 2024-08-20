@@ -1,5 +1,6 @@
 type LoginStatus {
   is_logged_in: Boolean!
+  name: String
   login_url: String
 }
 

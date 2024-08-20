@@ -4,14 +4,11 @@ import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery } from '@apo
 const client = new ApolloClient({
   uri: 'https://d27hv4mf8axlyg.cloudfront.net/api/graphql',
   cache: new InMemoryCache(),
-  headers: {
-    Authorization: `Bearer ${document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1")}`
-  }
 });
 
 const IS_LOGGED_IN = gql`
-  query IsLoggedIn {
-    login_status {
+  query IsLoggedIn($token: String!) {
+    login_status(token: $token) {
       is_logged_in
       login_url
     }
@@ -19,7 +16,10 @@ const IS_LOGGED_IN = gql`
 `;
 
 function AuthStatus() {
-  const { loading, error, data } = useQuery(IS_LOGGED_IN);
+  const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+  const { loading, error, data } = useQuery(IS_LOGGED_IN, {
+    variables: { token },
+  });
 
   if (loading) return <p>Loading...</p>;
   if (error || !data.login_status.is_logged_in) {
@@ -31,7 +31,7 @@ function AuthStatus() {
   }
   const { is_logged_in, login_url } = data.login_status;
 
-  return data.isLoggedIn ? <p>Logged In</p> : <p>Logged Out</p>;
+  return is_logged_in ? <p>Logged In</p> : <p>Logged Out</p>;
 }
 
 function App() {
@@ -43,4 +43,3 @@ function App() {
 }
 
 export default App;
-
