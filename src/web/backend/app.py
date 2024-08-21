@@ -5,7 +5,7 @@ import logging
 
 # Configure the logger
 logger = logging.getLogger()
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 
 app = Chalice(app_name='spotify-workouts-web')
 
@@ -18,29 +18,18 @@ type_defs = load_schema_from_path("chalicelib/schema.graphql")
 schema = make_executable_schema(type_defs, *get_resolvers())
 
 def custom_error_formatter(error, debug=False):
-    # Log the error or print it out for debugging purposes
-    logger.error("GraphQL Error:", error.message)
-    if error.original_error:
-        logger.error("Original Error:", str(error.original_error))
-
-    # You can also log other error details if needed
-    logger.error("Path:", error.path)
-    logger.error("Locations:", error.locations)
-
-    # Format the error for the response
     formatted_error = format_error(error, debug)
     return formatted_error
-
 
 @app.route('/graphql', methods=['POST'], content_types=['application/json'], cors=cors_config)
 def graphql_endpoint():
     request = app.current_request
     data = request.json_body
-    errors, result = graphql_sync(
+    success, result = graphql_sync(
         schema,data, error_formatter=custom_error_formatter
     )
 
-    if errors:
-        return Response(status_code=400, body={'result': result.get("errors", [])})
+    if not success:
+        return Response(status_code=400, body={'errors': result.get("errors", [])})
 
-    return {'data': result}
+    return result

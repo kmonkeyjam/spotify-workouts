@@ -24,14 +24,14 @@ function AuthStatus() {
   if (loading) return <p>Loading...</p>;
   if (error || !data.login_status.is_logged_in) {
     return (
-      <button onClick={() => window.location.href = '/login'}>
+      <button onClick={() => window.location.href = data.login_status.login_url}>
         Login
       </button>
     );
   }
   const { is_logged_in, login_url } = data.login_status;
 
-  return is_logged_in ? <p>Logged In</p> : <p>Logged Out</p>;
+  return is_logged_in ? <p>Logged In</p> : <a href={login_url}>Login</a>;
 }
 
 function App() {
