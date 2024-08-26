@@ -1,7 +1,10 @@
+import requests
 from chalice import Chalice, Response, CORSConfig
 from ariadne import make_executable_schema, load_schema_from_path, graphql_sync, format_error
 from chalicelib.resolvers import get_resolvers
 import logging
+
+from chalicelib.secrets_helper import get_secret
 
 # Configure the logger
 logger = logging.getLogger()
@@ -33,3 +36,33 @@ def graphql_endpoint():
         return Response(status_code=400, body={'errors': result.get("errors", [])})
 
     return result
+
+@app.route('/login-callback', methods=['GET'])
+def callback():
+    logging.info(f"Request: {app.current_request.to_dict()}")
+
+    code = app.current_request.query_params.get('code')
+    redirect_uri = "https://d27hv4mf8axlyg.cloudfront.net/api/login-callback"
+    token_url = "https://accounts.spotify.com/api/token"
+
+    secret_name = "spotify-workouts"
+    region_name = "us-west-2"
+    secret_values = get_secret(secret_name, region_name)
+
+    payload = {
+        "grant_type": "authorization_code",
+        "code": code,
+        "redirect_uri": redirect_uri,
+        "client_id": secret_values['SPOTIFY_OAUTH_CLIENT_ID'],
+        "client_secret": secret_values['SPOTIFY_OAUTH_CLIENT_SECRET']
+    }
+
+    response = requests.post(token_url, data=payload)
+    access_token = response.json().get("access_token")
+
+    # Set the cookie and redirect
+    headers = {
+        'Location': 'https://d27hv4mf8axlyg.cloudfront.net/',
+        'Set-Cookie': f'token={access_token}; Path=/; HttpOnly; Secure'
+    }
+    return Response(body='', status_code=302, headers=headers)

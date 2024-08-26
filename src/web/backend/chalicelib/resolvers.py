@@ -15,7 +15,7 @@ mutation = MutationType()
 
 # Dummy secret for JWT (use your actual secret)
 JWT_SECRET = 'your-secret'
-REDIRECT_URI = "https://d27hv4mf8axlyg.cloudfront.net/login-callback"
+REDIRECT_URI = "https://d27hv4mf8axlyg.cloudfront.net/api/login-callback"
 
 
 @query.field("login_status")
