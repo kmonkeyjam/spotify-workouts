@@ -5,6 +5,7 @@ import jwt
 from ariadne import QueryType, MutationType
 from chalicelib.secrets_helper import get_secret
 import logging
+import datetime
 
 # Configure the logger
 logger = logging.getLogger()
@@ -43,6 +44,18 @@ def get_login_url():
     url = f"https://accounts.spotify.com/authorize?{urlencode(params)}"
     logger.info("URL: " + url)
     return url
+
+def create_jwt(access_token, user_id, name):
+    payload = {
+        "sub": user_id,
+        "name": name,
+        "access_token": access_token,
+        "iat": datetime.datetime.utcnow(),  # Issued at
+        "exp": datetime.datetime.utcnow() + datetime.timedelta(days=7)  # Expiration time (1 hour from now)
+    }
+    token = jwt.encode(payload, JWT_SECRET, algorithm="HS256")
+    logger.info("Token: " + token)
+    return token
 
 
 def get_resolvers():
