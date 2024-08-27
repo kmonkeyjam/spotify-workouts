@@ -1,0 +1,7 @@
+query IsLoggedIn($token: String) {
+  login_status(token: $token) {
+    is_logged_in
+    login_url
+    name
+  }
+}

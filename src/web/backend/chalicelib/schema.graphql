@@ -5,5 +5,5 @@ type LoginStatus {
 }
 
 type Query {
-  login_status(token: String!): LoginStatus
+  login_status(token: String): LoginStatus
 }

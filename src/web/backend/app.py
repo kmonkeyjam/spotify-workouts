@@ -34,7 +34,9 @@ def graphql_endpoint():
     # Use regex to find the token
     match = re.search(r'(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*', cookie_header)
     token = match.group(1) if match else None
-    data['variables']['token'] = token
+    data['variables']['token'] = token or "UNKNOWN"
+
+    logging.info(f"Variables: {data['variables']}")
 
     success, result = graphql_sync(
         schema,data, error_formatter=custom_error_formatter
